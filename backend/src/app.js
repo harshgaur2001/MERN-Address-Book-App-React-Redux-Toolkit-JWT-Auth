@@ -11,10 +11,18 @@ app.use(express.static("public"));
 app.use(cookieParser());
 
 // CORS configurations
-app.options("*", cors());
+const allowedOrigins = process.env.CORS_ORIGIN?.split(",") || [];
+
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN?.split(",") || "http://localhost:5173",
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true); // Allow Postman
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      } else {
+        return callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization"],

@@ -73,7 +73,7 @@ export const fetchCurrentUser = createAsyncThunk(
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    user: JSON.parse(localStorage.getItem("user")) || null,
+    user: localStorage.getItem("user") || null,
     accessToken: localStorage.getItem("accessToken") || null,
     refreshToken: localStorage.getItem("refreshToken") || null,
     loading: false,
@@ -106,10 +106,7 @@ const authSlice = createSlice({
         state.loading = false;
         state.user = action.payload;
 
-        localStorage.setItem(
-          "user",
-          JSON.stringify(action.payload.user.username)
-        );
+        localStorage.setItem("user", JSON.stringify(action.payload.user));
       })
 
       .addCase(fetchCurrentUser.rejected, (state) => {
@@ -132,10 +129,7 @@ const authSlice = createSlice({
         state.accessToken = action.payload.accessToken;
         state.refreshToken = action.payload.refreshToken;
 
-        localStorage.setItem(
-          "user",
-          JSON.stringify(action.payload.user.username)
-        );
+        localStorage.setItem("user", JSON.stringify(action.payload.user));
         localStorage.setItem("accessToken", action.payload.accessToken);
         localStorage.setItem("refreshToken", action.payload.refreshToken);
         state.loginSuccess = true;

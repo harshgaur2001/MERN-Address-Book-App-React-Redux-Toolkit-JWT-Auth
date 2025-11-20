@@ -6,6 +6,8 @@ export default function Header() {
   const { user } = useSelector((s) => s.auth);
   const dispatch = useDispatch();
 
+  console.log(user);
+
   return (
     <header className="bg-gray-900 text-white p-4 text-center flex flex-col md:flex-row md:flex md:justify-between gap-3">
       <h1 className="text-xl font-bold whitespace-nowrap">

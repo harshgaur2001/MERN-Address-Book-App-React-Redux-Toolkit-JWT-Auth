@@ -8,13 +8,19 @@ export default function Signup() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { registerSuccess, loading } = useSelector((state) => state.auth);
+  const { user, registerSuccess, loading } = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (registerSuccess) {
       navigate("/login");
     }
   }, [registerSuccess]);
+
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, []);
 
   const handleSignup = () => {
     dispatch(registerUser(data));

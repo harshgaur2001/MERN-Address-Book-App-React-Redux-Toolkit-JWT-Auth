@@ -7,13 +7,20 @@ export default function Login() {
   const [data, setData] = useState({ email: "", password: "" });
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loginSuccess, loading } = useSelector((s) => s.auth);
+
+  const { user, loginSuccess, loading } = useSelector((s) => s.auth);
 
   useEffect(() => {
     if (loginSuccess) {
       navigate("/");
     }
   }, [loginSuccess]);
+
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, []);
 
   const handleLogin = () => {
     dispatch(loginUser(data));

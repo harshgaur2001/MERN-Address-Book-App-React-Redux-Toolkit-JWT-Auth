@@ -11,23 +11,35 @@ app.use(express.static("public"));
 app.use(cookieParser());
 
 // CORS configurations
-const allowedOrigins = process.env.CORS_ORIGIN?.split(",") || [];
+const allowedOrigins = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(",")
+  : ["http://localhost:5173"]; // fallback for local
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (!origin) return callback(null, true); // Allow Postman
+      if (!origin) return callback(null, true);
+
+      // Allow localhost and vercel
       if (allowedOrigins.includes(origin)) {
         return callback(null, true);
-      } else {
-        return callback(new Error("Not allowed by CORS"));
       }
+
+      console.log("❌ CORS BLOCKED:", origin);
+      return callback(new Error("Not allowed by CORS"));
     },
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
-    allowedHeaders: ["Content-Type", "Authorization"],
   }),
 );
+
+// app.use(
+//   cors({
+//     origin: process.env.CORS_ORIGIN?.split(",") || "http://localhost:5173",
+//     credentials: true,
+//     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+//     allowedHeaders: ["Content-Type", "Authorization"],
+//   }),
+// );
 
 // import the routes
 import healthCheckRouter from "./routes/healthcheck.routes.js";

@@ -11,6 +11,7 @@ app.use(express.static("public"));
 app.use(cookieParser());
 
 // CORS configurations
+app.options("*", cors());
 app.use(
   cors({
     origin: process.env.CORS_ORIGIN?.split(",") || "http://localhost:5173",
